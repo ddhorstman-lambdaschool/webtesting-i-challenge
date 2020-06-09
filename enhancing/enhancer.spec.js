@@ -39,51 +39,32 @@ describe("enhancer", () => {
     });
   });
   describe("fail", () => {
-    const initialItemHigh = { durability: 50, enhancement: 19 };
-    const initialItemLow = { durability: 50, enhancement: 14 };
+    const initialItem = { durability: 50, enhancement: 19 };
+    const initialItemMid = { ...initialItem, enhancement: 16 };
+    const initialItemLow = { ...initialItem, enhancement: 14 };
+    const initialItemVeryLow = { ...initialItem, enhancement: 4 };
 
-    it("decreases durability by the appropriate step", () => {
+    it("correctly alters items with durability greater than 16", () => {
+      const initialItemHigh = {...initialItem, enhancement: 19};
       const {
-        durability: failedDurability,
-        enhancement: discard,
-        ...failedItem
-      } = enhancer.fail(initialItemHigh);
-      const {
-        durability: initialDurability,
-        enhancement: alsoDiscard,
+        enhancement: initEnhancement,
+        durability: initDurability,
         ...initItem
       } = initialItemHigh;
+      const {
+        enhancement: failedEnhancement,
+        durability: failedDurability,
+        ...failedItem
+      } = enhancer.fail(initialItemHigh);
+
       expect(failedItem).toEqual(initItem);
-      expect(failedDurability).toBe(initialDurability - 1);
-
-      const {
-        durability: initialDurabilityLow,
-        enhancement: discardAgain,
-        ...initItemLow
-      } = initialItemLow;
-      const {
-        durability: failedDurabilityLow,
-        enhancement: alsoDiscardAgain,
-        ...failedItemLow
-      } = enhancer.fail(initialItemLow);
-      expect(failedItemLow).toEqual(initialItemLow);
-      expect(failedDurabilityLow).toBe(initialDurability - 5);
+      expect(failedDurability).toEqual(initDurability-10);
+      expect(failedEnhancement).toEqual(initEnhancement-1);
     });
-    it("decreases enhancement if applicable", () => {
-      const { enhancement: failedEnhancement, ...failedItem } = enhancer.fail(
-        initialItemHigh
-      );
-      const {
-        enhancement: initialEnhancement,
-        ...initItemExcludingEnhancement
-      } = initialItemHigh;
+    it.todo("correctly alters items with durability 15 or 16");
+    it.todo("correctly alters items with durability less than 15");
+    it.todo("correctly alters items with durability less than 5");
 
-      expect(failedEnhancement).toBe(initialEnhancement - 1);
-      expect(failedItem).toEqual(initItemExcludingEnhancement);
-
-      const failedLowEnhancement = enhancer.fail(initialItemLow);
-      expect(failedLowEnhancement).toEqual(initialItemLow);
-    });
     it("returns null if no input is supplied", () => {
       const returned = enhancer.fail();
       expect(returned).toBe(null);

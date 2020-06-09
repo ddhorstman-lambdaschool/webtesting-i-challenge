@@ -19,8 +19,16 @@ function fail(item) {
   const { durability, enhancement, ...i } = item;
   return {
     ...i,
-    durability,
-    enhancement: enhancement > 16 ? enhancement - 1 : enhancement,
+    durability:
+      enhancement > 14 
+        ? durability - 10
+        : durability < 5
+          ? 0 
+          : durability - 5,
+    enhancement:
+      enhancement > 16 
+        ? enhancement - 1
+        : enhancement,
   };
 }
 
