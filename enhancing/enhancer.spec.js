@@ -1,9 +1,9 @@
 const enhancer = require("./enhancer.js");
 
-const initialItem = { durability: 50, enhancement: 19 };
-
 describe("enhancer", () => {
   describe("repair", () => {
+    const initialItem = { durability: 50, enhancement: 19 };
+
     it("repairs an item that's passed in", () => {
       const repairedItem = enhancer.repair(initialItem);
       expect(repairedItem.durability).toBe(100);
@@ -19,6 +19,8 @@ describe("enhancer", () => {
     });
   });
   describe("success", () => {
+    const initialItem = { durability: 50, enhancement: 19 };
+
     it("increases enhancement by the appropriate step", () => {
       const enhancedItem = enhancer.succeed(initialItem);
       const enhancedMax = enhancer.succeed({ ...initialItem, enhancement: 20 });
@@ -37,24 +39,50 @@ describe("enhancer", () => {
     });
   });
   describe("fail", () => {
-    it.todo("decreases durability by the appropriate step");
+    const initialItemHigh = { durability: 50, enhancement: 19 };
+    const initialItemLow = { durability: 50, enhancement: 14 };
+
+    it("decreases durability by the appropriate step", () => {
+      const {
+        durability: failedDurability,
+        enhancement: discard,
+        ...failedItem
+      } = enhancer.fail(initialItemHigh);
+      const {
+        durability: initialDurability,
+        enhancement: alsoDiscard,
+        ...initItem
+      } = initialItemHigh;
+      expect(failedItem).toEqual(initItem);
+      expect(failedDurability).toBe(initialDurability - 1);
+
+      const {
+        durability: initialDurabilityLow,
+        enhancement: discardAgain,
+        ...initItemLow
+      } = initialItemLow;
+      const {
+        durability: failedDurabilityLow,
+        enhancement: alsoDiscardAgain,
+        ...failedItemLow
+      } = enhancer.fail(initialItemLow);
+      expect(failedItemLow).toEqual(initialItemLow);
+      expect(failedDurabilityLow).toBe(initialDurability - 5);
+    });
     it("decreases enhancement if applicable", () => {
       const { enhancement: failedEnhancement, ...failedItem } = enhancer.fail(
-        initialItem
+        initialItemHigh
       );
-      const failedLowEnhancement = enhancer.fail({
-        ...initialItem,
-        enhancement: 16,
-      });
       const {
         enhancement: initialEnhancement,
         ...initItemExcludingEnhancement
-      } = initialItem;
+      } = initialItemHigh;
 
       expect(failedEnhancement).toBe(initialEnhancement - 1);
       expect(failedItem).toEqual(initItemExcludingEnhancement);
 
-      expect(failedLowEnhancement).toEqual({ ...initialItem, enhancement: 16 });
+      const failedLowEnhancement = enhancer.fail(initialItemLow);
+      expect(failedLowEnhancement).toEqual(initialItemLow);
     });
     it("returns null if no input is supplied", () => {
       const returned = enhancer.fail();
