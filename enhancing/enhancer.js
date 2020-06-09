@@ -10,21 +10,27 @@ function succeed(item) {
   const { enhancement, ...i } = item;
   return {
     ...i,
-    enhancement: enhancement === 20 ? 20 : enhancement + 1,
+    enhancement:
+      enhancement < 20
+        ? enhancement + 1
+        : 20,
   };
 }
 
 function fail(item) {
   if (!item) return null;
-  const { durability, enhancement, ...i } = item;
+  let { durability, enhancement, ...i } = item;
+
+  durability = enhancement > 14
+                ? durability - 10
+                : durability - 5;
+
   return {
     ...i,
     durability:
-      enhancement > 14 
-        ? durability - 10
-        : durability < 5
-          ? 0 
-          : durability - 5,
+      durability >=0
+        ? durability
+        : 0,
     enhancement:
       enhancement > 16 
         ? enhancement - 1
@@ -43,6 +49,9 @@ function get(item) {
   return {
     ...i,
     enhancement,
-    name: enhancement !== 0 ?  `[+${enhancement}] ${name}` : name,
+    name:
+      enhancement !== 0
+        ?  `[+${enhancement}] ${name}`
+        : name,
   };
 }

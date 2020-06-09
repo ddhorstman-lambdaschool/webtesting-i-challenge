@@ -1,7 +1,7 @@
 const enhancer = require("./enhancer.js");
 
 describe("enhancer", () => {
-  const initialItem = { name: "Bow of Truth", durability: 50, enhancement: 19 };
+  const initialItem = { name: "Bow of Truth", durability: 10, enhancement: 16 };
 
   describe("repair", () => {
     it("repairs an item that's passed in", () => {
@@ -42,6 +42,10 @@ describe("enhancer", () => {
     });
   });
   describe("fail", () => {
+    if(!(initialItem.durability >=10)){
+      throw new Error("initialItem must have durability at least 10 for this test to work")
+    }
+
     it("correctly alters items with enhancement greater than 16", () => {
       const initialItemHigh = { ...initialItem, enhancement: 19 };
       const {
@@ -98,11 +102,10 @@ describe("enhancer", () => {
       expect(failedItem).toEqual(initItem);
       expect(failedDurability).toEqual(initDurability - 5);
     });
-    it("correctly alters items with very low durability", () => {
+    it("correctly alters items with low durability", () => {
       const initialItemVeryLow = {
         ...initialItem,
-        enhancement: 4,
-        durability: 4,
+        durability: 1,
       };
       const {
         enhancement: initEnhancement,
