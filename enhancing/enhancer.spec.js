@@ -19,16 +19,12 @@ describe("enhancer", () => {
     });
   });
   describe("success", () => {
-    it("doesn't modify an item's durability", () => {
-      const enhancedItem = enhancer.succeed(initialItem);
-      expect(enhancedItem.durability).toBe(initialItem.durability);
-    });
     it("increases enhancement by the appropriate step", () => {
-      const enhancedOnce = enhancer.succeed(initialItem);
-      const enhancedTwice = enhancer.succeed(enhancedOnce);
+      const enhancedItem = enhancer.succeed(initialItem);
+      const enhancedMax = enhancer.succeed({ ...initialItem, enhancement: 20 });
 
-      expect(enhancedOnce.enhancement).toBe(20);
-      expect(enhancedTwice.enhancement).toBe(20);
+      expect(enhancedItem.enhancement).toBe(initialItem.enhancement + 1);
+      expect(enhancedMax.enhancement).toBe(20);
     });
     it("only modifies enhancement", () => {
       const { enhancement, ...enhancedItem } = enhancer.succeed(initialItem);
@@ -37,6 +33,14 @@ describe("enhancer", () => {
     });
     it("returns null if no input is supplied", () => {
       const returned = enhancer.succeed();
+      expect(returned).toBe(null);
+    });
+  });
+  describe("fail", () => {
+    it.todo("decreases durability by the appropriate step");
+    it.todo("decreases enhancement if applicable");
+    it("returns null if no input is supplied", () => {
+      const returned = enhancer.fail();
       expect(returned).toBe(null);
     });
   });

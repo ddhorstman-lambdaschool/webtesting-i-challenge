@@ -15,7 +15,7 @@ function succeed(item) {
 }
 
 function fail(item) {
-  return { ...item };
+  return !item ? null : { ...item };
 }
 
 function repair(item) {
