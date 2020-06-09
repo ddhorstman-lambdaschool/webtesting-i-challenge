@@ -124,4 +124,13 @@ describe("enhancer", () => {
       expect(returned).toBe(null);
     });
   });
+  describe("get", () => {
+    it.todo("doesn't modify items with enhancement of zero");
+    it.todo("correctly modifies the name of enhanced items");
+    
+    it("returns null if no input is supplied", () => {
+      const returned = enhancer.get();
+      expect(returned).toBe(null);
+    });
+  });
 });

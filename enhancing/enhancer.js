@@ -38,5 +38,6 @@ function repair(item) {
 }
 
 function get(item) {
+  if(!item) return null;
   return { ...item };
 }
