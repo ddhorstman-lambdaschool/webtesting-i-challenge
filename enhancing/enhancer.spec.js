@@ -1,7 +1,7 @@
 const enhancer = require("./enhancer.js");
 
 describe("enhancer", () => {
-  const initialItem = { durability: 50, enhancement: 19 };
+  const initialItem = { name: "Bow of Truth", durability: 50, enhancement: 19 };
 
   describe("repair", () => {
     it("repairs an item that's passed in", () => {
@@ -125,9 +125,26 @@ describe("enhancer", () => {
     });
   });
   describe("get", () => {
-    it.todo("doesn't modify items with enhancement of zero");
-    it.todo("correctly modifies the name of enhanced items");
-    
+    it("doesn't modify items with enhancement of zero", () => {
+      const initialItemZero = { ...initialItem, enhancement: 0 };
+      const returned = enhancer.get(initialItemZero);
+      expect(returned).toEqual(initialItemZero);
+    });
+    it("correctly modifies the name of enhanced items", () => {
+      if (!(initialItem.enhancement > 0)) {
+        throw new Error(
+          "initialItem must have nonzero enhancement for this test to work"
+        );
+      }
+      const { name: newName, ...returnedItem } = enhancer.get(initialItem);
+      const { name: originalName, ...initItem } = initialItem;
+
+      expect(returnedItem).toEqual(initItem);
+      expect(newName).toEqual(
+        expect.stringContaining(initItem.enhancement.toString())
+      );
+    });
+
     it("returns null if no input is supplied", () => {
       const returned = enhancer.get();
       expect(returned).toBe(null);

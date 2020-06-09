@@ -33,11 +33,16 @@ function fail(item) {
 }
 
 function repair(item) {
-  if(!item) return null;
+  if (!item) return null;
   return { ...item, durability: 100 };
 }
 
 function get(item) {
-  if(!item) return null;
-  return { ...item };
+  if (!item) return null;
+  const { name, enhancement, ...i } = item;
+  return {
+    ...i,
+    enhancement,
+    name: enhancement !== 0 ?  `[+${enhancement}] ${name}` : name,
+  };
 }
