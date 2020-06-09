@@ -143,6 +143,7 @@ describe("enhancer", () => {
       expect(newName).toEqual(
         expect.stringContaining(initItem.enhancement.toString())
       );
+      expect(newName).toEqual(expect.stringContaining("+"));
     });
 
     it("returns null if no input is supplied", () => {
