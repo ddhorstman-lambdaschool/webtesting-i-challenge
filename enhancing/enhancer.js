@@ -6,16 +6,22 @@ module.exports = {
 };
 
 function succeed(item) {
-  return !item
-    ? null
-    : {
-        ...item,
-        enhancement: item.enhancement === 20 ? 20 : item.enhancement + 1,
-      };
+  if (!item) return null;
+  const { enhancement, ...i } = item;
+  return {
+    ...i,
+    enhancement: enhancement === 20 ? 20 : enhancement + 1,
+  };
 }
 
 function fail(item) {
-  return !item ? null : { ...item };
+  if (!item) return null;
+  const { durability, enhancement, ...i } = item;
+  return {
+    ...i,
+    durability,
+    enhancement: enhancement > 16 ? enhancement - 1 : enhancement,
+  };
 }
 
 function repair(item) {

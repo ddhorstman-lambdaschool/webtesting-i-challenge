@@ -38,7 +38,24 @@ describe("enhancer", () => {
   });
   describe("fail", () => {
     it.todo("decreases durability by the appropriate step");
-    it.todo("decreases enhancement if applicable");
+    it("decreases enhancement if applicable", () => {
+      const { enhancement: failedEnhancement, ...failedItem } = enhancer.fail(
+        initialItem
+      );
+      const failedLowEnhancement = enhancer.fail({
+        ...initialItem,
+        enhancement: 16,
+      });
+      const {
+        enhancement: initialEnhancement,
+        ...initItemExcludingEnhancement
+      } = initialItem;
+
+      expect(failedEnhancement).toBe(initialEnhancement - 1);
+      expect(failedItem).toEqual(initItemExcludingEnhancement);
+
+      expect(failedLowEnhancement).toEqual({ ...initialItem, enhancement: 16 });
+    });
     it("returns null if no input is supplied", () => {
       const returned = enhancer.fail();
       expect(returned).toBe(null);
